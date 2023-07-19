@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2020",         /* Set the ECMAScript target version */
+    "module": "commonjs",       /* Specify module code generation */
+    "lib": ["es2020", "dom"],   /* List of library files to include */
+    "outDir": ".",           /* Output directory for compiled JavaScript files */
+    "rootDir": ".",           /* Root directory where TypeScript source files are located */
+    "strict": true,             /* Enable strict type checking */
+    "declaration": true,   // Enable declaration file generation
+    "incremental": true,    // Enable incremental compilation
+    "tsBuildInfoFile": "./dist/.tsbuildinfo", // Specify the incremental build file location
+    "esModuleInterop": true,    /* Enable compatibility with CommonJS modules */
+    "resolveJsonModule": true,  /* Allow importing JSON files as modules */
+    "sourceMap": true           /* Generate source maps for debugging */
+  },
+  "include": ["**/*.ts"],   /* Specify the files to include for compilation */
+  "exclude": ["node_modules", "dist"]   /* Specify the files or directories to exclude from compilation */
+}

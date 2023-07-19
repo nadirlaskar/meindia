@@ -1,0 +1,23 @@
+{
+  "name": "media-uploader",
+  "version": "0.0.1",
+  "description": "defines API to upload media metadata and generate media identifier",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "build": "rimraf dist && tsc",
+    "start-dev": "NODE_ENV=dev node ./dist/server",
+    "docker:build": "docker build . -t media_uploader_service:latest"
+  },
+  "author": "nadirlaskar",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.20.0",
+    "utils": "file:../../utils"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
+  }
+}

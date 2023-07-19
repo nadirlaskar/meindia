@@ -1,0 +1,17 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "utils to share between services",
+  "main": "",
+  "scripts": {
+    "test": "test",
+    "build": "rimraf dist && tsc",
+    "docker:build": "docker build . -t media_base_service:latest"
+  },
+  "author": "nadirlaskar",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "rimraf": "^5.0.1"
+  }
+}
