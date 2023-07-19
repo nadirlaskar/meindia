@@ -2,10 +2,11 @@ version: '3.9'
 services:
   media-uploader:
     image: media_uploader_service:latest
+    container_name: media-uploader
     environment:
       NODE_ENV: ${NODE_ENV}
     ports:
-      - "5000:3000"
+      - "3000:3000"
     networks:
       - public
 
