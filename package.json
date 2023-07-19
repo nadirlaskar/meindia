@@ -4,8 +4,8 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {},
   "devDependencies": {
+    "@types/node": "^20.4.2",
     "lerna": "^7.1.4"
   }
 }
