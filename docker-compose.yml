@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  media-uploader:
+    image: media_uploader_service:latest
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "5000:3000"
+    networks:
+      - public
+
+networks:
+  public:
+    driver: bridge
