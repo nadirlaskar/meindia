@@ -2,9 +2,9 @@ import { randomUUID } from "crypto";
 import { Consumer, ConsumerSubscribeTopics, EachMessagePayload, Kafka, KafkaConfig, Producer, ProducerConfig } from "kafkajs";
 import Logger, { LoggerLevels } from "../logger/Logger";
 
-type Message<T> = { ts?: Number, event?: string, value: T }
+export type Message<T> = { ts?: Number, event?: string, value: T }
 type QueueResponse<T> = Message<T> | void | null;
-type Handler<T> = (message: Message<T>) => Promise<void>;
+export type Handler<T> = (message: Message<T>) => Promise<void>;
 
 export default abstract class QueueBuilder<T> {
     logger: Logger;
@@ -97,7 +97,7 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
             throw new Error('Consumer not initialized! call listen() first!');
         }
         this.consumer.run({
-            autoCommit: true,
+            autoCommit: false,
             eachMessage: async (queueItem: EachMessagePayload) => {
                 const { topic, partition, message } = queueItem;
                 const messageValue: string = message.value?.toString() ?? '{}';
@@ -105,7 +105,7 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
                 const valueAsType: T = JSON.parse(messageValue) as unknown as T;
                 await handler({
                     ts: Number(message.timestamp),
-                    event: message.headers?.event as string | undefined,
+                    event: message.headers?.event?.toString() ?? '',
                     value: valueAsType
                 });
             },
