@@ -1,0 +1,25 @@
+import { LoggerLevels } from "utils/logger/Logger";
+
+const env = {
+    serviceName: process.env.SERVICE_NAME ?? 'meta-updater',
+    logLevel: process.env.logLevel as unknown as LoggerLevels ?? LoggerLevels.DEBUG,
+    isDebugEnabled: process.env.NDOE_ENV !== 'production',
+    updaterGroupdId: process.env.UPDATER_GROUP_ID ?? 'meta-updater',
+    metadataUpdateTopic: process.env.METADATA_UPDATE_TOPIC ?? 'metadata-update',
+    kafkaConfig: {
+        clientId: process.env.KAFKA_CLIENT_ID ?? 'meta-updater',
+        brokers: process.env.KAFKA_BROKERS?.split(',') ?? ['kafka:9092'],
+        ssl: process.env.KAFKA_SSL === 'true',
+        connectionTimeout: Number(process.env.KAFKA_CONNECTION_TIMEOUT) ?? 3000,
+        authenticationTimeout: Number(process.env.KAFKA_AUTHENTICATION_TIMEOUT) ?? 1000,
+        reauthenticationThreshold: Number(process.env.KAFKA_REAUTHENTICATION_THRESHOLD) ?? 10000,
+        requestTimeout: Number(process.env.KAFKA_REQUEST_TIMEOUT) ?? 30000,
+        enforceRequestTimeout: process.env.KAFKA_ENFORCE_REQUEST_TIMEOUT === 'true',
+        retry: {
+            initialRetryTime: Number(process.env.KAFKA_RETRY_INITIAL_RETRY_TIME) ?? 300,
+            retries: Number(process.env.KAFKA_RETRY_RETRIES) ?? 10
+        }
+    }
+}
+
+export default env;

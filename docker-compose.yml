@@ -49,3 +49,14 @@ services:
       KAFKA_CONNECTION_TIMEOUT: 3000
     ports:
       - "3000:3000"
+
+  meta-updater:
+    image: meta_updater_service:latest
+    container_name: meta-updater
+    depends_on:
+      - kafka
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      BIND_HOST: "0.0.0.0"
+      KAFKA_BROKERS: "kafka:9092"
+      KAFKA_CONNECTION_TIMEOUT: 3000

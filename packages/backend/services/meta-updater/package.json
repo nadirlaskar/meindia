@@ -1,0 +1,27 @@
+{
+  "name": "meta-updater",
+  "version": "1.0.0",
+  "description": "This listens to new video meta-data and creates or updates in db.",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && tsc",
+    "start-dev": "NODE_ENV=dev node ./dist/main",
+    "docker:build": "docker build . -t meta_updater_service:latest"
+  },
+  "author": "nadirlaskar",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "utils"
+    ]
+  }
+}
