@@ -4,7 +4,7 @@ import { KafkaQueue } from "utils/queue/QueueBuilder";
 import Media, { MEDIA_SCHEMA_NAME } from "../entity/Media";
 import env from "../env";
 
-const QUEUE_AUTHOR = env.queueAuthor;
+const SERVICE_NAME = env.serviceName;
 const UPDATE_TOPIC: string | RegExp = env.metadataUpdateTopic;
 const KAFKA_CONFIG = env.kafkaConfig;
 
@@ -12,7 +12,7 @@ const logger = new Logger({
   level: env.logLevel
 });
 
-const mediaUploadQueue = new KafkaQueue<Media>(QUEUE_AUTHOR, env.logLevel, KAFKA_CONFIG);
+const mediaUploadQueue = new KafkaQueue<Media>(SERVICE_NAME, env.logLevel, KAFKA_CONFIG);
 
 const UploadController = async (request: any) => {
   const media = request.body as Media;

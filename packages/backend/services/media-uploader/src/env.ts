@@ -3,7 +3,7 @@ import { LoggerLevels } from "utils/logger/Logger";
 const env = {
     logLevel: process.env.logLevel as unknown as LoggerLevels ?? LoggerLevels.DEBUG,
     isDebugEnabled: process.env.NDOE_ENV !== 'production',
-    queueAuthor: process.env.QUEUE_AUTHOR ?? 'media-uploader',
+    serviceName: process.env.SERVICE_NAME ?? 'media-uploader',
     updaterGroupdId: process.env.UPDATER_GROUP_ID ?? 'media-uploader',
     metadataUpdateTopic: process.env.METADATA_UPDATE_TOPIC ?? 'metadata-update',
     kafkaConfig: {
