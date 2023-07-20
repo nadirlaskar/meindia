@@ -6,11 +6,10 @@
   ],
   "scripts": {
     "build": "lerna run build",
+    "docker:base:build": "lerna run docker:base:build",
     "docker:build": "lerna run docker:build",
     "docker:start-all": "docker-compose up -d ",
-    "prod:docker:start-all": "NODE_ENV=production npm run docker:start-all",
-    "dev:docker:start-all": "NODE_ENV=development npm run docker:start-all",
-    "update:dev": "NODE_ENV=development npm run docker:build && npm run dev:docker:start-all"
+    "update:dev": "NODE_ENV=development npm run docker:build && run docker:start-all"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
