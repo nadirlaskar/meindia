@@ -1,9 +1,10 @@
-import { ConsumerSubscribeTopics, EachMessagePayload, Kafka, KafkaConfig } from "kafkajs";
+import { randomUUID } from "crypto";
+import { Consumer, ConsumerSubscribeTopics, EachMessagePayload, Kafka, KafkaConfig, Producer, ProducerConfig } from "kafkajs";
 import Logger, { LoggerLevels } from "../logger/Logger";
 
-type Message<T> = { ts: Number, value: T }
+type Message<T> = { ts?: Number, event?: string, value: T }
 type QueueResponse<T> = Message<T> | void | null;
-type Handler = (message: Message<any>) => Promise<void>;
+type Handler<T> = (message: Message<T>) => Promise<void>;
 
 export default abstract class QueueBuilder<T> {
     logger: Logger;
@@ -11,11 +12,11 @@ export default abstract class QueueBuilder<T> {
         this.logger = new Logger({ level: loglevel });
         this.logger.info(`Created queue named: ${name}`);
     }
-    enqueue(message: Message<T>) {
+    enqueue(message: Message<T>, options?: any): Promise<any> | void {
         this.logger.debug(`enqueing message ${JSON.stringify(message)}`);
-        this.addMessageToQueue(message);
+        return this.addMessageToQueue(message, options);
     }
-    dequeue(handler: Handler): QueueResponse<T> {
+    dequeue(handler: Handler<T>): QueueResponse<T> {
         const logMessage = (message: Message<T>) => this.logger.debug(`dequeue message ${JSON.stringify(message)}`);
         const proxyHandler = this.proxyHandler(handler, logMessage);
         const message: QueueResponse<T> = this.getLastMessageFromQueue(proxyHandler);
@@ -24,7 +25,7 @@ export default abstract class QueueBuilder<T> {
             return message;
         }
     }
-    private proxyHandler(handler: Handler, logMessage: (message: Message<T>) => void) {
+    private proxyHandler(handler: Handler<T>, logMessage: (message: Message<T>) => void) {
         if (!handler) return;
         return async (message: Message<T>) => {
             logMessage(message);
@@ -35,8 +36,8 @@ export default abstract class QueueBuilder<T> {
         };
     }
 
-    abstract getLastMessageFromQueue(handler: Handler | void, options?: any): QueueResponse<T>;
-    abstract addMessageToQueue(message: Message<T>, options?: any): void;
+    abstract getLastMessageFromQueue(handler: Handler<T> | void, options?: any): QueueResponse<T>;
+    abstract addMessageToQueue(message: Message<T>, options?: any): Promise<any> | void;
 }
 
 export class ArrayQueueBuilder<T> extends QueueBuilder<T> {
@@ -49,9 +50,20 @@ export class ArrayQueueBuilder<T> extends QueueBuilder<T> {
     }
 }
 
+
+type KafkaConnectOptions = {
+    groupId: string;
+    topic: string | RegExp;
+    subscribeConfig?: Partial<ConsumerSubscribeTopics>;
+}
+
+type MessageOptions = {
+    topic: string;
+}
 export class KafkaQueue<T> extends QueueBuilder<T> {
-    kafkaInstance: any;
-    consumer: any;
+    private kafkaInstance: any;
+    private consumer?: Consumer;
+    private producer?: Producer;
     constructor(name: string, loglevel: LoggerLevels, kafkaConfig: KafkaConfig) {
         super(name, loglevel);
         this.kafkaInstance = new Kafka({
@@ -59,13 +71,31 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
             ...kafkaConfig
         });
     }
-    async connect(groupId: string, subscribeConfig: ConsumerSubscribeTopics) {
-        await this.kafkaInstance.connect();
-        await this.consumer.connect();
-        this.consumer = this.kafkaInstance.consumer({ groupId });
-        await this.consumer.subscribe(subscribeConfig);
+    async listen(options: KafkaConnectOptions) {
+        if (!this.consumer) {
+            this.logger.debug(`[Consumer] Connecting to kafka with options: ${JSON.stringify(options)}`);
+            this.consumer = this.kafkaInstance.consumer({ groupId: options.groupId });
+            await this.consumer?.connect();
+            this.logger.debug(`[Consumer] connected to kafka!`);
+        }
+        await this.consumer?.subscribe({
+            fromBeginning: true,
+            topics: [options.topic],
+            ...(options?.subscribeConfig ?? {})
+        });
     }
-    getLastMessageFromQueue(handler: Handler): void {
+    async connect(options?: ProducerConfig) {
+        if (!this.producer) {
+            this.logger.debug(`[Producer] Connecting to kafka with options: ${JSON.stringify(options)}`);
+            this.producer = this.kafkaInstance.producer(options);
+            await this.producer?.connect();
+            this.logger.debug(`[Producer] connected to kafka!`);
+        }
+    }
+    getLastMessageFromQueue(handler: Handler<T>): void {
+        if (!this.consumer) {
+            throw new Error('Consumer not initialized! call listen() first!');
+        }
         this.consumer.run({
             autoCommit: true,
             eachMessage: async (queueItem: EachMessagePayload) => {
@@ -75,16 +105,26 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
                 const valueAsType: T = JSON.parse(messageValue) as unknown as T;
                 await handler({
                     ts: Number(message.timestamp),
+                    event: message.headers?.event as string | undefined,
                     value: valueAsType
                 });
             },
         });
     }
-    addMessageToQueue(message: Message<T>, topic: string): void {
-        this.kafkaInstance.producer().send({
-            topic: topic,
+    async addMessageToQueue(message: Message<T>, options: MessageOptions): Promise<any> {
+        if (!this.producer) {
+            throw new Error('Producer not initialized! call connect() first!');
+        }
+        return this.producer.send({
+            topic: options.topic,
             messages: [
-                { value: JSON.stringify(message) },
+                {
+                    key: randomUUID(),
+                    value: JSON.stringify(message.value),
+                    headers: {
+                        event: message.event
+                    }
+                },
             ],
         });
     }

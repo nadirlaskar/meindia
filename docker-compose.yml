@@ -1,15 +1,51 @@
 version: '3.9'
 services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INSIDE://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "metadata-update:1:1,metadata-update-dlq:1:1"  # topic:partitions:replicas
+    ports:
+      - "9092:9092"
+
+  kafka-drop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafka-drop
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    ports:
+      - "9000:9000"
+
   media-uploader:
     image: media_uploader_service:latest
     container_name: media-uploader
+    depends_on:
+      - kafka
     environment:
       NODE_ENV: ${NODE_ENV}
+      BIND_HOST: "0.0.0.0"
+      KAFKA_BROKERS: "kafka:9092"
+      KAFKA_CONNECTION_TIMEOUT: 3000
     ports:
       - "3000:3000"
-    networks:
-      - public
-
-networks:
-  public:
-    driver: bridge

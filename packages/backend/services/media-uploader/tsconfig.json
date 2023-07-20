@@ -5,6 +5,7 @@
     "lib": ["es2020", "dom"],   /* List of library files to include */
     "outDir": "dist",           /* Output directory for compiled JavaScript files */
     "rootDir": "src",           /* Root directory where TypeScript source files are located */
+    "declaration": true,   // Enable declaration file generation
     "strict": true,             /* Enable strict type checking */
     "esModuleInterop": true,    /* Enable compatibility with CommonJS modules */
     "resolveJsonModule": true,  /* Allow importing JSON files as modules */

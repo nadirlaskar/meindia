@@ -1,26 +1,24 @@
 // Import the framework and instantiate it
 import Fastify from 'fastify';
 import Logger from 'utils/logger/Logger';
+import HealthCheckController from './controllers/HealthCheckController';
+import UploadController, { UploadSchema } from './controllers/UploadController';
+import { withSchema } from './entity/schemas';
 import env from './env';
-const fastify = Fastify({
-  logger: env.isDebugEnabled
-})
 
-const logger = new Logger({
-  level: env.logLevel
-});
+const logger = new Logger({ level: env.logLevel });
+const BIND_HOST = process.env.BIND_HOST ?? '0.0.0.0'
+
+const fastify = withSchema(Fastify({ logger: env.isDebugEnabled }));
 
 // Declare a route
-fastify.get('/', async function handler (request: any, reply: any) {
-  return { hello: 'world' }
-})
+fastify.get('/health', HealthCheckController);
+fastify.post('/upload', UploadSchema, UploadController);
 
-
-async function run(){
-  // Run the server!
+async function run() {
   try {
     logger.debug(`Media uploader started!`);
-    await fastify.listen({ port: 3000 })
+    await fastify.listen({ host: BIND_HOST, port: 3000 })
   } catch (err) {
     fastify.log.error(err)
   }
