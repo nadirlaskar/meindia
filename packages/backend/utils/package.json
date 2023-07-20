@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "build": "rimraf dist && tsc",
-    "docker:build": "docker build . -t media_base_service:latest"
+    "docker:base:build": "docker build . -t media_base_service:latest"
   },
   "author": "nadirlaskar",
   "license": "ISC",

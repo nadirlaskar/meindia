@@ -8,13 +8,16 @@ WORKDIR /app/backend/services/media-uploader
 
 # Copy the package.json and package-lock.json files to the container
 # This will install dependencies separately to leverage Docker caching
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Install project dependencies
 RUN npm install
 
 # Copy the entire service directory to the container
 COPY . ./
+
+# Install utils
+RUN npm install ../../utils;
 
 # Build the TypeScript code
 RUN npm run build

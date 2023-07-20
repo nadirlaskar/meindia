@@ -3,7 +3,11 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": []
+        "cacheableOperations": [
+          "build",
+          "docker:base:build",
+          "docker:build"
+        ]
       }
     }
   },
@@ -20,7 +24,13 @@
     },
     "build": {
       "outputs": [
-        "{projectRoot}/dist"
+        "{projectRoot}/dist",
+        "{projectRoot}/dist/*.js"
+      ]
+    },
+    "docker:build": {
+      "dependsOn": [
+        "^docker:base:build"
       ]
     }
   }
