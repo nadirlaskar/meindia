@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto";
 import Logger from "utils/logger/Logger";
 import { KafkaQueue } from "utils/queue/QueueBuilder";
-import Media, { MEDIA_SCHEMA_NAME } from "../entity/Media";
 import env from "../env";
+import Media, { MEDIA_SCHEMA_NAME } from "../schema/Media";
 
 const SERVICE_NAME = env.serviceName;
 const UPDATE_TOPIC: string | RegExp = env.metadataUpdateTopic;
