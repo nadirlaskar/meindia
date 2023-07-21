@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,        /* Enable project references */
     "target": "es2020",         /* Set the ECMAScript target version */
     "module": "commonjs",       /* Specify module code generation */
     "lib": ["es2020", "dom"],   /* List of library files to include */

@@ -87,9 +87,19 @@ services:
       - kafka
     environment:
       NODE_ENV: ${NODE_ENV}
-      BIND_HOST: "0.0.0.0"
       KAFKA_BROKERS: "kafka:9092"
       KAFKA_CONNECTION_TIMEOUT: 3000
+
+  meta-provider:
+    image: meta_provider_service:latest
+    container_name: meta-provider
+    depends_on:
+      - kafka
+      - mongo
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "5555:5555"
 
 volumes:
   zookeeper_data:

@@ -1,29 +1,23 @@
 FROM media_base_service
 
 # Create directory for services
-RUN mkdir /app/backend/services/meta-updater
-
-# Set the working directory inside the container
-WORKDIR /app/backend/services/meta-updater
+RUN npm init -w backend/services/meta-updater -y
 
 # Copy the package.json files to the container
 # This will install dependencies separately to leverage Docker caching
-COPY package.json  ./
+COPY package.json  ./backend/services/meta-updater
 
 # Install project dependencies
-RUN npm install
+RUN npm install -w ./backend/services/meta-updater
 
 # Copy the entire service directory to the container
-COPY . ./
-
-# Install utils
-RUN npm install ../../utils;
+COPY . ./backend/services/meta-updater
 
 # Build the TypeScript code
-RUN npm run build
+RUN npm run build --workspaces --if-present
 
 # Expose the port on which the service will run (assuming port 4000)
 EXPOSE 4000
 
 # Start the service
-CMD [ "node", "dist/main.js" ]
+CMD [ "npm", "run", "start", "--workspaces", "--if-present" ]
