@@ -74,7 +74,13 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
     async listen(options: KafkaConnectOptions) {
         if (!this.consumer) {
             this.logger.debug(`[Consumer] Connecting to kafka with options: ${JSON.stringify(options)}`);
-            this.consumer = this.kafkaInstance.consumer({ groupId: options.groupId });
+            this.consumer = this.kafkaInstance.consumer({
+                groupId: options.groupId,
+                retry: {
+                    initialRetryTime: 100,
+                    retries: 8
+                }
+            });
             await this.consumer?.connect();
             this.logger.debug(`[Consumer] connected to kafka!`);
         }
