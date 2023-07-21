@@ -97,7 +97,7 @@ export class KafkaQueue<T> extends QueueBuilder<T> {
             throw new Error('Consumer not initialized! call listen() first!');
         }
         this.consumer.run({
-            autoCommit: false,
+            autoCommit: true,
             eachMessage: async (queueItem: EachMessagePayload) => {
                 const { topic, partition, message } = queueItem;
                 const messageValue: string = message.value?.toString() ?? '{}';
