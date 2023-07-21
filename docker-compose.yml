@@ -8,6 +8,9 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    volumes:
+      - zookeeper_data:/data
+      - zookeeper_datalog:/datalog
 
 
   kafka:
@@ -25,6 +28,32 @@ services:
       KAFKA_CREATE_TOPICS: "metadata-update:1:1,metadata-update-dlq:1:1"  # topic:partitions:replicas
     ports:
       - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGO_DB_NAME: media-metadata
+    ports:
+      - "8081:8081"
 
   kafka-drop:
     image: obsidiandynamics/kafdrop
@@ -42,6 +71,7 @@ services:
     container_name: media-uploader
     depends_on:
       - kafka
+      - mongo
     environment:
       NODE_ENV: ${NODE_ENV}
       BIND_HOST: "0.0.0.0"
@@ -60,3 +90,9 @@ services:
       BIND_HOST: "0.0.0.0"
       KAFKA_BROKERS: "kafka:9092"
       KAFKA_CONNECTION_TIMEOUT: 3000
+
+volumes:
+  zookeeper_data:
+  zookeeper_datalog:
+  kafka_data:
+  mongo_data:
