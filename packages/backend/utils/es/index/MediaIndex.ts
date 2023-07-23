@@ -4,7 +4,8 @@ const MediaSchema = {
   properties: {
     id: { type: 'keyword' },
     title: { type: 'text' },
-    description: { type: 'text' }
+    description: { type: 'text' },
+    tags: { type: 'keyword' },
   }
 }
 
