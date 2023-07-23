@@ -1,0 +1,182 @@
+[
+  {
+    "title": "Web Development Fundamentals",
+    "description": "Learn the basics of web development and build your first website.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "web development"
+    ]
+  },
+  {
+    "title": "Introduction to Artificial Intelligence",
+    "description": "Explore the exciting world of AI and its applications.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "artificial intelligence"
+    ]
+  },
+  {
+    "title": "Fitness Cardio Workouts",
+    "description": "Get your heart pumping with these high-energy cardio workouts.",
+    "mediaType": "video",
+    "tags": [
+      "fitness",
+      "cardio"
+    ]
+  },
+  {
+    "title": "World History",
+    "description": "Take a journey through the major events and civilizations of history.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "history"
+    ]
+  },
+  {
+    "title": "Photography Basics",
+    "description": "Master the essential skills and techniques in photography.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "photography"
+    ]
+  },
+  {
+    "title": "Effective Communication in the Workplace",
+    "description": "Improve your communication skills to excel in your career.",
+    "mediaType": "video",
+    "tags": [
+      "business",
+      "communication"
+    ]
+  },
+  {
+    "title": "Gardening Tips and Tricks",
+    "description": "Learn how to cultivate a beautiful and thriving garden.",
+    "mediaType": "video",
+    "tags": [
+      "home",
+      "gardening"
+    ]
+  },
+  {
+    "title": "Introduction to Graphic Design",
+    "description": "Get started with graphic design and unleash your creativity.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "graphic design"
+    ]
+  },
+  {
+    "title": "Exploring National Parks",
+    "description": "Discover the natural wonders of various national parks.",
+    "mediaType": "video",
+    "tags": [
+      "travel",
+      "nature"
+    ]
+  },
+  {
+    "title": "Investing in the Stock Market",
+    "description": "Learn the basics of investing and building a stock portfolio.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "investing"
+    ]
+  },
+  {
+    "title": "Delicious Dessert Recipes",
+    "description": "Indulge in a variety of mouthwatering dessert recipes.",
+    "mediaType": "video",
+    "tags": [
+      "cooking",
+      "desserts"
+    ]
+  },
+  {
+    "title": "Introduction to Psychology",
+    "description": "Explore the fascinating field of human psychology.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "psychology"
+    ]
+  },
+  {
+    "title": "Home Workout Routines",
+    "description": "Stay fit and healthy with these effective home workout routines.",
+    "mediaType": "video",
+    "tags": [
+      "fitness",
+      "home workouts"
+    ]
+  },
+  {
+    "title": "Introduction to Philosophy",
+    "description": "Contemplate the fundamental questions about life and existence.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "Painting Landscapes",
+    "description": "Learn the techniques to create stunning landscape paintings.",
+    "mediaType": "video",
+    "tags": [
+      "art",
+      "painting"
+    ]
+  },
+  {
+    "title": "Effective Time Management",
+    "description": "Organize your time efficiently to boost productivity.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "time management"
+    ]
+  },
+  {
+    "title": "Traveling on a Budget",
+    "description": "Discover how to travel and explore the world without breaking the bank.",
+    "mediaType": "video",
+    "tags": [
+      "travel",
+      "budget"
+    ]
+  },
+  {
+    "title": "Introduction to Biology",
+    "description": "Explore the wonders of life and the natural world.",
+    "mediaType": "video",
+    "tags": [
+      "education",
+      "biology"
+    ]
+  },
+  {
+    "title": "Home Decor and Interior Design",
+    "description": "Transform your living space with creative home decor ideas.",
+    "mediaType": "video",
+    "tags": [
+      "home",
+      "interior design"
+    ]
+  },
+  {
+    "title": "Healthy Smoothie Recipes",
+    "description": "Blend delicious and nutritious smoothies for a healthy lifestyle.",
+    "mediaType": "video",
+    "tags": [
+      "cooking",
+      "smoothies"
+    ]
+  }
+]
