@@ -16,6 +16,9 @@ const env = {
     autoIndex: process.env.MONGO_AUTO_INDEX === 'true' ?? true,
     /** Set to `true` to make Mongoose automatically call `createCollection()` on every model created on this connection. */
     autoCreate: process.env.MONGO_AUTO_CREATE === 'true' ?? true,
+  },
+  esConfig: {
+    node: process.env.ELASTIC_SEARCH_NODE ?? 'http://elasticsearch:9200'
   }
 }
 

@@ -66,6 +66,19 @@ services:
     ports:
       - "9000:9000"
 
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
   media-uploader:
     image: media_uploader_service:latest
     container_name: media-uploader
@@ -106,3 +119,4 @@ volumes:
   zookeeper_datalog:
   kafka_data:
   mongo_data:
+  esdata:
