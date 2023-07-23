@@ -6,6 +6,9 @@ const MediaSchema = {
     title: { type: 'text' },
     description: { type: 'text' },
     tags: { type: 'keyword' },
+    mediaType: {
+      type: 'keyword'
+    },
   }
 }
 

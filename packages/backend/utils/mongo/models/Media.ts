@@ -5,7 +5,7 @@ interface Media {
   title: string;
   description: string;
   tags: string[];
-  type: string;
+  mediaType: string;
   size?: number;
   url?: string;
   isDeleted?: boolean;
@@ -32,7 +32,7 @@ const mediaMongoSchema = new Schema<Media>({
   tags: {
     type: [String]
   },
-  type: {
+  mediaType: {
     type: String
   },
   size: {

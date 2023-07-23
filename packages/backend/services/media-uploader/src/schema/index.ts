@@ -1,8 +1,9 @@
 import { FastifyInstance } from "fastify";
-import { mediaSchema } from "./Media";
+import { mediaSchemaForCreate, mediaSchemaForEdit } from "./Media";
 
 const schemas = [
-  mediaSchema
+  mediaSchemaForCreate,
+  mediaSchemaForEdit
 ];
 
 export function withSchema(fastify: FastifyInstance) {

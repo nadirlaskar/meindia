@@ -2,7 +2,7 @@
 import Fastify from 'fastify';
 import Logger from 'utils/logger/Logger';
 import HealthCheckController from './controllers/HealthCheckController';
-import UploadController, { UploadSchema } from './controllers/UploadController';
+import MediaCreateController, { MediaCreateSchema, MediaEditController, MediaEditSchema } from './controllers/MediaController';
 import env from './env';
 import { withSchema } from './schema';
 
@@ -13,7 +13,8 @@ const fastify = withSchema(Fastify({ logger: env.isDebugEnabled }));
 
 // Declare a route
 fastify.get('/health', HealthCheckController);
-fastify.post('/upload', UploadSchema, UploadController);
+fastify.post('/media/new', MediaCreateSchema, MediaCreateController);
+fastify.patch('/media/:id', MediaEditSchema, MediaEditController);
 
 async function run() {
   try {

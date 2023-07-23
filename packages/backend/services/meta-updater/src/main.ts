@@ -43,15 +43,16 @@ const processMetaUpdateMessages: Handler<Media> = async (message: Message<Media>
 )()
 
 async function saveToMongoDb(message: Message<Media>) {
-  logger.debug(`Creating media: ${JSON.stringify(message.value)}`);
-  const media = new MediaModel(message.value);
-  const existingItem = await MediaModel.findOne({ id: media.id });
-  if (existingItem) {
-    logger.debug(`Media already exists in db: ${JSON.stringify(existingItem)}`);
-    return;
+  logger.debug(`porcessing media: ${JSON.stringify(message.value)}`);
+  let itemToSave = await MediaModel.findOne({ id: message.value.id });
+  if (itemToSave) {
+    logger.debug(`Media already exists in db: ${JSON.stringify(itemToSave)}`);
+    itemToSave.set(message.value);
+  } else {
+    itemToSave = new MediaModel(message.value);
   }
-  await media.save();
-  logger.debug(`Created media: ${JSON.stringify(media)}`);
+  await itemToSave.save();
+  logger.debug(`Updated media: ${JSON.stringify(itemToSave)}`);
 }
 
 async function saveToElasticSearch(message: Message<Media>) {
